@@ -93,7 +93,7 @@ class _TestScreenState extends State<TestScreen> {
                 child: Center(
                   child: Container(
                     constraints: const BoxConstraints(maxWidth: 520),
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 26),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(24),
@@ -115,12 +115,10 @@ class _TestScreenState extends State<TestScreen> {
                         ),
                         const SizedBox(height: 28),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: AnswerValue.values
                               .map((value) => _AnswerDot(value: value, onTap: () => _submitAnswer(value)))
-                              .expand((widget) => [widget, const SizedBox(width: 18)])
-                              .toList()
-                            ..removeLast(),
+                              .toList(),
                         ),
                         const SizedBox(height: 16),
                         const Text(
@@ -162,11 +160,11 @@ class _AnswerDot extends StatelessWidget {
       };
 
   double get size => switch (value) {
-        AnswerValue.stronglyDisagree => 64,
-        AnswerValue.disagree => 52,
-        AnswerValue.neutral => 44,
-        AnswerValue.agree => 52,
-        AnswerValue.stronglyAgree => 64,
+        AnswerValue.stronglyDisagree => 60,
+        AnswerValue.disagree => 50,
+        AnswerValue.neutral => 40,
+        AnswerValue.agree => 50,
+        AnswerValue.stronglyAgree => 60,
       };
 
   @override
