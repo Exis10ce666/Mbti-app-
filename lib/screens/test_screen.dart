@@ -114,13 +114,13 @@ class _TestScreenState extends State<TestScreen> {
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, height: 1.4),
                         ),
                         const SizedBox(height: 28),
-                        Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: 20,
-                          runSpacing: 16,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: AnswerValue.values
                               .map((value) => _AnswerDot(value: value, onTap: () => _submitAnswer(value)))
-                              .toList(),
+                              .expand((widget) => [widget, const SizedBox(width: 18)])
+                              .toList()
+                            ..removeLast(),
                         ),
                         const SizedBox(height: 16),
                         const Text(
@@ -155,10 +155,18 @@ class _AnswerDot extends StatelessWidget {
 
   Color get color => switch (value) {
         AnswerValue.stronglyDisagree => const Color(0xFFE53935),
-        AnswerValue.disagree => const Color(0xFFF06292),
+        AnswerValue.disagree => const Color(0xFFF28B82),
         AnswerValue.neutral => const Color(0xFFBDBDBD),
         AnswerValue.agree => const Color(0xFFA5D6A7),
         AnswerValue.stronglyAgree => const Color(0xFF43A047),
+      };
+
+  double get size => switch (value) {
+        AnswerValue.stronglyDisagree => 64,
+        AnswerValue.disagree => 52,
+        AnswerValue.neutral => 44,
+        AnswerValue.agree => 52,
+        AnswerValue.stronglyAgree => 64,
       };
 
   @override
@@ -169,8 +177,8 @@ class _AnswerDot extends StatelessWidget {
         GestureDetector(
           onTap: onTap,
           child: Container(
-            width: 54,
-            height: 54,
+            width: size,
+            height: size,
             decoration: BoxDecoration(
               color: color,
               shape: BoxShape.circle,
