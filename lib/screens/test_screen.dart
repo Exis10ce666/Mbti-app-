@@ -93,7 +93,7 @@ class _TestScreenState extends State<TestScreen> {
                 child: Center(
                   child: Container(
                     constraints: const BoxConstraints(maxWidth: 520),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 26),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(24),
@@ -114,11 +114,18 @@ class _TestScreenState extends State<TestScreen> {
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, height: 1.4),
                         ),
                         const SizedBox(height: 28),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: AnswerValue.values
-                              .map((value) => _AnswerDot(value: value, onTap: () => _submitAnswer(value)))
-                              .toList(),
+                        Center(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              for (final entry in AnswerValue.values.indexed)
+                                ...[
+                                  if (entry.$1 != 0) const SizedBox(width: 12),
+                                  _AnswerDot(value: entry.$2, onTap: () => _submitAnswer(entry.$2)),
+                                ],
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 16),
                         const Text(
