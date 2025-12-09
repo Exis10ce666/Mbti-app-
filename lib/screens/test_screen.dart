@@ -31,7 +31,6 @@ class _TestScreenState extends State<TestScreen> {
     final progress = (current + 1) / questions.length;
 
     return Container(
-      padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF6D28D9), Color(0xFFEC4899)],
@@ -39,64 +38,110 @@ class _TestScreenState extends State<TestScreen> {
           end: Alignment.bottomRight,
         ),
       ),
-      child: Column(
-        children: [
-          Row(
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              IconButton(
-                onPressed: () {
-                  if (current == 0) {
-                    widget.onBack();
-                  } else {
-                    setState(() {
-                      current -= 1;
-                      answers.removeLast();
-                    });
-                  }
-                },
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-              ),
-              const Spacer(),
-              Text('Question ${current + 1} of ${questions.length}', style: const TextStyle(color: Colors.white)),
-              const Spacer(),
-              const SizedBox(width: 48),
-            ],
-          ),
-          const SizedBox(height: 12),
-          LinearProgressIndicator(value: progress, color: Colors.white, backgroundColor: Colors.white24),
-          const Spacer(),
-          Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+              Row(
                 children: [
-                  Text(question.prompt, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 24),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 12,
-                    runSpacing: 12,
-                    children: AnswerValue.values
-                        .map((value) => _AnswerPill(value: value, onTap: () => _submitAnswer(value)))
-                        .toList(),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    onPressed: () {
+                      if (current == 0) {
+                        widget.onBack();
+                      } else {
+                        setState(() {
+                          current -= 1;
+                          answers.removeLast();
+                        });
+                      }
+                    },
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
                   ),
-                  const SizedBox(height: 12),
-                  const Text('Tap a pill to record your response', style: TextStyle(color: Colors.black54)),
+                  const Spacer(),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('PERSONAVIEW',
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, letterSpacing: 0.8)),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Question ${current + 1} of ${questions.length}',
+                        style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  const SizedBox(width: 32),
                 ],
               ),
-            ),
+              const SizedBox(height: 12),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: LinearProgressIndicator(
+                  value: progress,
+                  minHeight: 6,
+                  color: Colors.white,
+                  backgroundColor: Colors.white24,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Expanded(
+                child: Center(
+                  child: Container(
+                    constraints: const BoxConstraints(maxWidth: 520),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 26),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 16,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          question.prompt,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, height: 1.4),
+                        ),
+                        const SizedBox(height: 28),
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 20,
+                          runSpacing: 16,
+                          children: AnswerValue.values
+                              .map((value) => _AnswerDot(value: value, onTap: () => _submitAnswer(value)))
+                              .toList(),
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Tap a circle to select your answer',
+                          style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          const Spacer(),
-        ],
+        ),
       ),
     );
   }
 }
 
-class _AnswerPill extends StatelessWidget {
-  const _AnswerPill({required this.value, required this.onTap});
+class _AnswerDot extends StatelessWidget {
+  const _AnswerDot({required this.value, required this.onTap});
   final AnswerValue value;
   final VoidCallback onTap;
 
@@ -109,22 +154,43 @@ class _AnswerPill extends StatelessWidget {
       };
 
   Color get color => switch (value) {
-        AnswerValue.stronglyDisagree => Colors.red.shade400,
-        AnswerValue.disagree => Colors.red.shade200,
-        AnswerValue.neutral => Colors.grey.shade300,
-        AnswerValue.agree => Colors.green.shade200,
-        AnswerValue.stronglyAgree => Colors.green.shade400,
+        AnswerValue.stronglyDisagree => const Color(0xFFE53935),
+        AnswerValue.disagree => const Color(0xFFF06292),
+        AnswerValue.neutral => const Color(0xFFBDBDBD),
+        AnswerValue.agree => const Color(0xFFA5D6A7),
+        AnswerValue.stronglyAgree => const Color(0xFF43A047),
       };
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(14)),
-        child: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            width: 54,
+            height: 54,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.18),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+              border: Border.all(color: Colors.white, width: 2),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
+      ],
     );
   }
 }
