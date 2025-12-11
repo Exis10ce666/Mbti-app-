@@ -67,13 +67,15 @@ class _TypeCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AspectRatio(
-            aspectRatio: 16 / 9,
+            aspectRatio: 4 / 3,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(14),
               child: _TypeImage(path: type.localAsset, fallbackColor: type.accentColor),
             ),
           ),
           const SizedBox(height: 12),
+          _FamousPersonSection(type: type),
+          const SizedBox(height: 16),
           const Text('Key traits', style: TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 6),
           Wrap(spacing: 8, runSpacing: 8, children: type.keyTraits.map((trait) => Chip(label: Text(trait))).toList()),
@@ -82,6 +84,54 @@ class _TypeCard extends StatelessWidget {
           _BulletList(title: 'Growth areas', items: type.growthAreas),
         ],
       ),
+    );
+  }
+}
+
+class _FamousPersonSection extends StatelessWidget {
+  const _FamousPersonSection({required this.type});
+  final PersonalityType type;
+
+  @override
+  Widget build(BuildContext context) {
+    final facts = [
+      'Insert a well-known ${type.name} here for quick recognition.',
+      'Add a brief note on how they embody ${type.subtitle.toLowerCase()}.',
+      'Share a standout achievement or anecdote that fits this type.',
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Famous person', style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            height: 170,
+            width: double.infinity,
+            color: type.accentColor.withOpacity(0.12),
+            child: const Center(
+              child: Text('Insert picture here', textAlign: TextAlign.center),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        ...facts.map((fact) => Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 2),
+                    child: Icon(Icons.circle, size: 8, color: Colors.black54),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text(fact)),
+                ],
+              ),
+            )),
+      ],
     );
   }
 }
