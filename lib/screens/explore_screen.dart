@@ -180,7 +180,7 @@ class _UnderstandingSection extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                childAspectRatio: 1.2,
+                childAspectRatio: 0.95,
               ),
               itemCount: cards.length,
               itemBuilder: (context, index) => cards[index],
