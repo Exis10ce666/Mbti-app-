@@ -20,80 +20,86 @@ class WelcomeScreen extends StatelessWidget {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.12),
-                    shape: BoxShape.circle,
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.12),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.psychology_alt_rounded, size: 52, color: Colors.white),
+                      ),
+                      const SizedBox(height: 26),
+                      const Text(
+                        'WELCOME TO',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          letterSpacing: 1.8,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      const Text(
+                        'PersonaView',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 32,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 12),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          'Discover your personality type through a comprehensive assessment based on the Myers-Briggs Type Indicator.',
+                          style: TextStyle(color: Colors.white70, height: 1.4),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton(
+                          onPressed: onStart,
+                          style: FilledButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: const Color(0xFF7C2AE8),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                            textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                          ),
+                          child: const Text('Take the Test'),
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton(
+                          onPressed: onExplore,
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(color: Colors.white70, width: 1.4),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                            textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                            backgroundColor: Colors.white.withOpacity(0.12),
+                          ),
+                          child: const Text('Explore All 16 Types'),
+                        ),
+                      ),
+                    ],
                   ),
-                  child: const Icon(Icons.psychology_alt_rounded, size: 52, color: Colors.white),
                 ),
-                const SizedBox(height: 24),
-                const Text(
-                  'WELCOME TO',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    letterSpacing: 1.8,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                const Text(
-                  'PersonaView',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 32,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 12),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: Text(
-                    'Discover your personality type through a comprehensive assessment based on the Myers-Briggs Type Indicator.',
-                    style: TextStyle(color: Colors.white70, height: 1.4),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: onStart,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: const Color(0xFF7C2AE8),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                      textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
-                    ),
-                    child: const Text('Take the Test'),
-                  ),
-                ),
-                const SizedBox(height: 14),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                    onPressed: onExplore,
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.white70, width: 1.4),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                      textStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                      backgroundColor: Colors.white.withOpacity(0.12),
-                    ),
-                    child: const Text('Explore All 16 Types'),
-                  ),
-                ),
-                const Spacer(),
+                const SizedBox(height: 18),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: const [
