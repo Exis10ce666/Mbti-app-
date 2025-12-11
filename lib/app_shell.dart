@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'data/personality_types.dart';
 import 'models.dart';
 import 'services/assessment.dart';
+import 'services/database.dart';
 import 'screens/explore_screen.dart';
 import 'screens/insights_screen.dart';
 import 'screens/loading_screen.dart';
@@ -27,11 +28,36 @@ class _PersonaViewAppState extends State<PersonaViewApp> {
   PersonalityType? viewingType;
   String? email;
   String? username;
+  String? userId;
+  bool databaseReady = false;
+  DateTime? testStartedAt;
 
-  void _handleLogin(String newEmail, String newUsername) {
+  @override
+  void initState() {
+    super.initState();
+    _initDatabase();
+  }
+
+  Future<void> _initDatabase() async {
+    if (DatabaseService.instance.isReady) {
+      setState(() => databaseReady = true);
+      return;
+    }
+
+    final initialized = await DatabaseService.instance.init();
+    if (mounted) {
+      setState(() {
+        databaseReady = initialized;
+      });
+    }
+  }
+
+  void _handleLogin(String newEmail, String newUsername) async {
+    final id = await DatabaseService.instance.upsertUser(email: newEmail, username: newUsername);
     setState(() {
       email = newEmail;
       username = newUsername;
+      userId = id ?? userId;
       currentScreen = AppScreen.welcome;
     });
   }
@@ -39,6 +65,7 @@ class _PersonaViewAppState extends State<PersonaViewApp> {
   void _startTest() {
     setState(() {
       answers = const [];
+      testStartedAt = DateTime.now();
       currentScreen = AppScreen.test;
     });
   }
@@ -51,7 +78,19 @@ class _PersonaViewAppState extends State<PersonaViewApp> {
 
     Future.delayed(const Duration(milliseconds: 1200), () {
       final typeId = calculatePersonalityType(submission);
+      final scores = calculateDimensionScores(submission);
       final type = _lookupPersonality(typeId);
+      final durationSeconds = testStartedAt != null ? DateTime.now().difference(testStartedAt!).inSeconds : null;
+
+      if (userId != null && databaseReady) {
+        DatabaseService.instance.saveResult(
+          userId: userId!,
+          typeId: typeId,
+          scores: scores,
+          answers: submission,
+          durationSeconds: durationSeconds,
+        );
+      }
       setState(() {
         userType = type;
         viewingType = type;
@@ -88,8 +127,10 @@ class _PersonaViewAppState extends State<PersonaViewApp> {
     setState(() {
       email = null;
       username = null;
+      userId = null;
       userType = null;
       viewingType = null;
+      testStartedAt = null;
       currentScreen = AppScreen.login;
     });
   }

@@ -2,6 +2,18 @@ import '../data/questions.dart';
 import '../models.dart';
 
 String calculatePersonalityType(List<AnswerValue> answers) {
+  final scores = calculateDimensionScores(answers);
+
+  final type = StringBuffer()
+    ..write((scores['E']! >= scores['I']!) ? 'E' : 'I')
+    ..write((scores['S']! >= scores['N']!) ? 'S' : 'N')
+    ..write((scores['T']! >= scores['F']!) ? 'T' : 'F')
+    ..write((scores['J']! >= scores['P']!) ? 'J' : 'P');
+
+  return type.toString();
+}
+
+Map<String, int> calculateDimensionScores(List<AnswerValue> answers) {
   final scores = <String, int>{'E': 0, 'I': 0, 'S': 0, 'N': 0, 'T': 0, 'F': 0, 'J': 0, 'P': 0};
 
   for (var i = 0; i < answers.length; i++) {
@@ -30,11 +42,5 @@ String calculatePersonalityType(List<AnswerValue> answers) {
     }
   }
 
-  final type = StringBuffer()
-    ..write((scores['E']! >= scores['I']!) ? 'E' : 'I')
-    ..write((scores['S']! >= scores['N']!) ? 'S' : 'N')
-    ..write((scores['T']! >= scores['F']!) ? 'T' : 'F')
-    ..write((scores['J']! >= scores['P']!) ? 'J' : 'P');
-
-  return type.toString();
+  return scores;
 }

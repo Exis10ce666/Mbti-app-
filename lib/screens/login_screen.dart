@@ -177,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 18),
                   const Text(
-                    'Your data is stored locally on your device. We respect your privacy.',
+                    'Securely continue as a guest or sign in to sync results to the configured database.',
                     style: TextStyle(color: Colors.white70, fontSize: 12),
                     textAlign: TextAlign.center,
                   ),
