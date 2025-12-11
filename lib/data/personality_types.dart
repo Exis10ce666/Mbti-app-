@@ -1,0 +1,460 @@
+import 'package:flutter/material.dart';
+import '../models.dart';
+
+class InsightItem {
+  const InsightItem({
+    required this.title,
+    required this.body,
+    required this.tag,
+    required this.icon,
+  });
+
+  final String title;
+  final String body;
+  final String tag;
+  final IconData icon;
+}
+
+class QuickTip {
+  const QuickTip({required this.title, required this.body});
+
+  final String title;
+  final String body;
+}
+
+// A compact personality catalog. Add more entries or replace the placeholder
+// images inside assets/images to match your Figma exports.
+final List<PersonalityType> personalityTypes = [
+  PersonalityType(
+    id: 'INTP',
+    name: 'INTP',
+    subtitle: 'The Strategic Thinker',
+    keyTraits: const ['Analytical', 'Independent', 'Innovative'],
+    strengths: const ['Logical reasoning', 'Conceptual thinking', 'Open-minded'],
+    growthAreas: const ['May overthink', 'Struggle with routine'],
+    atWork: 'You thrive on complex puzzles and autonomy. Give yourself deep work blocks.',
+    inRelationships: 'You seek cerebral bonds and honest conversations.',
+    underStress: 'You may withdraw to process ideas and detach from noise.',
+    quickFacts: const [
+      'Known for reworking systems and abstractions.',
+      'Often seen as inventive problem-solvers.',
+      'Prefers autonomy with a clear challenge.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Albert Einstein', role: 'Physicist', avatarAsset: 'assets/images/intp_fp1.png'),
+      const FamousPerson(name: 'Marie Curie', role: 'Scientist', avatarAsset: 'assets/images/intp_fp2.png'),
+      const FamousPerson(name: 'Isaac Newton', role: 'Mathematician', avatarAsset: 'assets/images/intp_fp3.png'),
+    ],
+    localAsset: 'assets/images/intp.png',
+    accentColor: const Color(0xFF2E3A93),
+  ),
+  PersonalityType(
+    id: 'INTJ',
+    name: 'INTJ',
+    subtitle: 'The Architect',
+    keyTraits: const ['Visionary', 'Strategic', 'Independent'],
+    strengths: const ['Long-term planning', 'Pattern spotting', 'Self-motivated'],
+    growthAreas: const ['Can appear aloof', 'May dismiss feelings'],
+    atWork: 'You excel when given autonomy to design systems and optimize outcomes.',
+    inRelationships: 'You show loyalty through thoughtful problem-solving and support.',
+    underStress: 'You may become perfectionistic or overly critical.',
+    quickFacts: const [
+      'Sees patterns quickly and builds roadmaps.',
+      'Values competence and clarity.',
+      'Thrives when iterating toward a long-range goal.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Elon Musk', role: 'Entrepreneur', avatarAsset: 'assets/images/intj_fp1.png'),
+      const FamousPerson(name: 'Angela Merkel', role: 'Chancellor', avatarAsset: 'assets/images/intj_fp2.png'),
+      const FamousPerson(name: 'Jane Austen', role: 'Author', avatarAsset: 'assets/images/intj_fp3.png'),
+    ],
+    localAsset: 'assets/images/intj.png',
+    accentColor: const Color(0xFF5E35B1),
+  ),
+  PersonalityType(
+    id: 'ENTJ',
+    name: 'ENTJ',
+    subtitle: 'The Commander',
+    keyTraits: const ['Decisive', 'Driven', 'Strategic'],
+    strengths: const ['Leadership', 'Efficiency', 'Clear direction'],
+    growthAreas: const ['May be blunt', 'Can overlook emotions'],
+    atWork: 'You thrive when steering teams toward ambitious goals.',
+    inRelationships: 'You value competence and direct communication.',
+    underStress: 'You might micromanage or push too hard.',
+    quickFacts: const [
+      'Naturally organizes people and priorities.',
+      'Excels at troubleshooting and scaling systems.',
+      'Motivated by ambitious outcomes.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Steve Jobs', role: 'CEO', avatarAsset: 'assets/images/entj_fp1.png'),
+      const FamousPerson(name: 'Gordon Ramsay', role: 'Chef', avatarAsset: 'assets/images/entj_fp2.png'),
+      const FamousPerson(name: 'Indra Nooyi', role: 'Executive', avatarAsset: 'assets/images/entj_fp3.png'),
+    ],
+    localAsset: 'assets/images/entj.png',
+    accentColor: const Color(0xFFD84315),
+  ),
+  PersonalityType(
+    id: 'ENTP',
+    name: 'ENTP',
+    subtitle: 'The Debater',
+    keyTraits: const ['Inventive', 'Charismatic', 'Analytical'],
+    strengths: const ['Quick thinking', 'Idea generation', 'Challenging norms'],
+    growthAreas: const ['May argue for sport', 'Can drop follow-through'],
+    atWork: 'You shine in brainstorming, pitching, and solving novel problems.',
+    inRelationships: 'You keep things lively with wit and big-picture dreaming.',
+    underStress: 'You may become restless or provocative.',
+    quickFacts: const [
+      'Loves testing ideas through debate.',
+      'Spots opportunities others overlook.',
+      'Energized by variety and novelty.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Mark Twain', role: 'Author', avatarAsset: 'assets/images/entp_fp1.png'),
+      const FamousPerson(name: 'Céline Dion', role: 'Vocalist', avatarAsset: 'assets/images/entp_fp2.png'),
+      const FamousPerson(name: 'Walt Disney', role: 'Animator', avatarAsset: 'assets/images/entp_fp3.png'),
+    ],
+    localAsset: 'assets/images/entp.png',
+    accentColor: const Color(0xFF039BE5),
+  ),
+  PersonalityType(
+    id: 'INFJ',
+    name: 'INFJ',
+    subtitle: 'The Advocate',
+    keyTraits: const ['Insightful', 'Purposeful', 'Empathetic'],
+    strengths: const ['Deep listening', 'Guiding others', 'Meaning-driven'],
+    growthAreas: const ['May over-idealize', 'Can overextend'],
+    atWork: 'You excel in mission-led spaces and roles that blend strategy with care.',
+    inRelationships: 'You seek authenticity, shared values, and emotional depth.',
+    underStress: 'You might withdraw or become perfectionistic.',
+    quickFacts: const [
+      'Often mentors or advocates behind the scenes.',
+      'Seeks purpose and aligned communities.',
+      'Balances strategy with empathy.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Mahatma Gandhi', role: 'Leader', avatarAsset: 'assets/images/infj_fp1.png'),
+      const FamousPerson(name: 'J.K. Rowling', role: 'Author', avatarAsset: 'assets/images/infj_fp2.png'),
+      const FamousPerson(name: 'Carl Jung', role: 'Psychiatrist', avatarAsset: 'assets/images/infj_fp3.png'),
+    ],
+    localAsset: 'assets/images/infj.png',
+    accentColor: const Color(0xFF6D4C41),
+  ),
+  PersonalityType(
+    id: 'ENFJ',
+    name: 'ENFJ',
+    subtitle: 'The Protagonist',
+    keyTraits: const ['Charismatic', 'Organized', 'Empathetic'],
+    strengths: const ['Motivates others', 'Communicates clearly', 'Values harmony'],
+    growthAreas: const ['Can overextend', 'Takes on too much'],
+    atWork: 'You excel when coordinating teams and communicating a vision.',
+    inRelationships: 'You nurture others and look for authentic connection.',
+    underStress: 'You might people-please or forget your own needs.',
+    quickFacts: const [
+      'Natural facilitators who rally groups.',
+      'Leads with encouragement and structure.',
+      'Keeps an eye on group morale.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Oprah Winfrey', role: 'Host', avatarAsset: 'assets/images/enfj_fp1.png'),
+      const FamousPerson(name: 'Barack Obama', role: 'President', avatarAsset: 'assets/images/enfj_fp2.png'),
+      const FamousPerson(name: 'Maya Angelou', role: 'Poet', avatarAsset: 'assets/images/enfj_fp3.png'),
+    ],
+    localAsset: 'assets/images/enfj.png',
+    accentColor: const Color(0xFF1B5E20),
+  ),
+  PersonalityType(
+    id: 'INFP',
+    name: 'INFP',
+    subtitle: 'The Mediator',
+    keyTraits: const ['Idealistic', 'Curious', 'Gentle'],
+    strengths: const ['Empathy', 'Creativity', 'Values-driven'],
+    growthAreas: const ['May avoid conflict', 'Can get lost in ideas'],
+    atWork: 'You thrive when work aligns with your values and offers room to create.',
+    inRelationships: 'You prioritize authenticity and deep emotional safety.',
+    underStress: 'You might feel discouraged or withdraw.',
+    quickFacts: const [
+      'Leads with values and imagination.',
+      'Seeks meaning-rich work and relationships.',
+      'Calm presence with strong inner drive.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'William Shakespeare', role: 'Playwright', avatarAsset: 'assets/images/infp_fp1.png'),
+      const FamousPerson(name: 'Alicia Keys', role: 'Artist', avatarAsset: 'assets/images/infp_fp2.png'),
+      const FamousPerson(name: 'Tove Jansson', role: 'Author', avatarAsset: 'assets/images/infp_fp3.png'),
+    ],
+    localAsset: 'assets/images/infp.png',
+    accentColor: const Color(0xFF00897B),
+  ),
+  PersonalityType(
+    id: 'ENFP',
+    name: 'ENFP',
+    subtitle: 'The Campaigner',
+    keyTraits: const ['Enthusiastic', 'Creative', 'Curious'],
+    strengths: const ['Energetic', 'Idea-rich', 'Empathetic'],
+    growthAreas: const ['Can get scattered', 'May avoid routine'],
+    atWork: 'You deliver best with variety and room to explore possibilities.',
+    inRelationships: 'You bring warmth and imaginative adventures.',
+    underStress: 'You might feel trapped or chase new distractions.',
+    quickFacts: const [
+      'Brings energy and imagination to teams.',
+      'Quickly spots connections between ideas.',
+      'Values authenticity and freedom.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Robin Williams', role: 'Actor', avatarAsset: 'assets/images/enfp_fp1.png'),
+      const FamousPerson(name: 'Sandra Bullock', role: 'Actor', avatarAsset: 'assets/images/enfp_fp2.png'),
+      const FamousPerson(name: 'Dr. Seuss', role: 'Author', avatarAsset: 'assets/images/enfp_fp3.png'),
+    ],
+    localAsset: 'assets/images/enfp.png',
+    accentColor: const Color(0xFFF57C00),
+  ),
+  PersonalityType(
+    id: 'ISTJ',
+    name: 'ISTJ',
+    subtitle: 'The Logistician',
+    keyTraits: const ['Grounded', 'Detail-oriented', 'Reliable'],
+    strengths: const ['Systems mindset', 'Consistent', 'Responsible'],
+    growthAreas: const ['May resist change', 'Can appear strict'],
+    atWork: 'You shine with clear processes, ownership, and defined milestones.',
+    inRelationships: 'You show care through reliability and follow-through.',
+    underStress: 'You may double down on rules and become inflexible.',
+    quickFacts: const [
+      'Keeps teams organized and accountable.',
+      'Prefers clarity, structure, and proven methods.',
+      'Shows commitment through consistency.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Natalie Portman', role: 'Actor', avatarAsset: 'assets/images/istj_fp1.png'),
+      const FamousPerson(name: 'George Washington', role: 'President', avatarAsset: 'assets/images/istj_fp2.png'),
+      const FamousPerson(name: 'Hermione Granger', role: 'Fictional', avatarAsset: 'assets/images/istj_fp3.png'),
+    ],
+    localAsset: 'assets/images/istj.png',
+    accentColor: const Color(0xFF37474F),
+  ),
+  PersonalityType(
+    id: 'ISFJ',
+    name: 'ISFJ',
+    subtitle: 'The Defender',
+    keyTraits: const ['Supportive', 'Organized', 'Observant'],
+    strengths: const ['Reliability', 'Practical care', 'Attention to detail'],
+    growthAreas: const ['May avoid conflict', 'Can overcommit'],
+    atWork: 'You excel in structured environments where you can help people directly.',
+    inRelationships: 'You show love through thoughtful acts and steady presence.',
+    underStress: 'You might bottle up needs or worry about letting others down.',
+    quickFacts: const [
+      'Anchors teams with steadiness and care.',
+      'Remembers details and follows through.',
+      'Prefers practical, people-centered roles.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Mother Teresa', role: 'Humanitarian', avatarAsset: 'assets/images/isfj_fp1.png'),
+      const FamousPerson(name: 'Kate Middleton', role: 'Princess of Wales', avatarAsset: 'assets/images/isfj_fp2.png'),
+      const FamousPerson(name: 'Rosa Parks', role: 'Activist', avatarAsset: 'assets/images/isfj_fp3.png'),
+    ],
+    localAsset: 'assets/images/isfj.png',
+    accentColor: const Color(0xFF1565C0),
+  ),
+  PersonalityType(
+    id: 'ESTJ',
+    name: 'ESTJ',
+    subtitle: 'The Executive',
+    keyTraits: const ['Organized', 'Practical', 'Direct'],
+    strengths: const ['Decision-making', 'Process building', 'Dependability'],
+    growthAreas: const ['May be rigid', 'Can over-manage'],
+    atWork: 'You thrive when leading operations and driving consistent execution.',
+    inRelationships: 'You show care by being dependable and protective.',
+    underStress: 'You might become controlling or impatient.',
+    quickFacts: const [
+      'Sets clear standards and expectations.',
+      'Acts quickly on practical solutions.',
+      'Trusted for dependability.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Michelle Obama', role: 'Attorney', avatarAsset: 'assets/images/estj_fp1.png'),
+      const FamousPerson(name: 'Sonia Sotomayor', role: 'Justice', avatarAsset: 'assets/images/estj_fp2.png'),
+      const FamousPerson(name: 'John D. Rockefeller', role: 'Industrialist', avatarAsset: 'assets/images/estj_fp3.png'),
+    ],
+    localAsset: 'assets/images/estj.png',
+    accentColor: const Color(0xFF8D6E63),
+  ),
+  PersonalityType(
+    id: 'ESFJ',
+    name: 'ESFJ',
+    subtitle: 'The Consul',
+    keyTraits: const ['Caring', 'Sociable', 'Organized'],
+    strengths: const ['Community building', 'Service-oriented', 'Reliable'],
+    growthAreas: const ['May seek approval', 'Can avoid tough feedback'],
+    atWork: 'You excel when coordinating people, events, and shared experiences.',
+    inRelationships: 'You nurture others through presence, planning, and kindness.',
+    underStress: 'You might worry about being unappreciated.',
+    quickFacts: const [
+      'Reads group needs and responds quickly.',
+      'Enjoys bringing people together.',
+      'Keeps traditions and routines steady.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Jennifer Lopez', role: 'Artist', avatarAsset: 'assets/images/esfj_fp1.png'),
+      const FamousPerson(name: 'Bill Clinton', role: 'President', avatarAsset: 'assets/images/esfj_fp2.png'),
+      const FamousPerson(name: 'Anne Hathaway', role: 'Actor', avatarAsset: 'assets/images/esfj_fp3.png'),
+    ],
+    localAsset: 'assets/images/esfj.png',
+    accentColor: const Color(0xFF7CB342),
+  ),
+  PersonalityType(
+    id: 'ISTP',
+    name: 'ISTP',
+    subtitle: 'The Virtuoso',
+    keyTraits: const ['Hands-on', 'Calm', 'Adaptable'],
+    strengths: const ['Problem solving', 'Practicality', 'Resourcefulness'],
+    growthAreas: const ['May detach', 'Can resist structure'],
+    atWork: 'You thrive when experimenting, building, and fixing tangible problems.',
+    inRelationships: 'You value freedom and mutual respect for space.',
+    underStress: 'You might withdraw or become blunt.',
+    quickFacts: const [
+      'Learns by doing and iterating.',
+      'Prefers autonomy and direct impact.',
+      'Brings calm in crisis moments.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Bruce Lee', role: 'Martial artist', avatarAsset: 'assets/images/istp_fp1.png'),
+      const FamousPerson(name: 'Clint Eastwood', role: 'Actor', avatarAsset: 'assets/images/istp_fp2.png'),
+      const FamousPerson(name: 'Amelia Earhart', role: 'Aviator', avatarAsset: 'assets/images/istp_fp3.png'),
+    ],
+    localAsset: 'assets/images/istp.png',
+    accentColor: const Color(0xFF546E7A),
+  ),
+  PersonalityType(
+    id: 'ISFP',
+    name: 'ISFP',
+    subtitle: 'The Adventurer',
+    keyTraits: const ['Gentle', 'Artistic', 'Flexible'],
+    strengths: const ['Aesthetic sense', 'Calm presence', 'Adaptability'],
+    growthAreas: const ['May avoid planning', 'Can internalize stress'],
+    atWork: 'You excel when you can create, adapt, and keep work human-centered.',
+    inRelationships: 'You offer warmth and appreciation for shared experiences.',
+    underStress: 'You might disengage or procrastinate.',
+    quickFacts: const [
+      'Expressive and quietly bold.',
+      'Values autonomy and creative freedom.',
+      'Picks up on moods and aesthetics.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Frida Kahlo', role: 'Painter', avatarAsset: 'assets/images/isfp_fp1.png'),
+      const FamousPerson(name: 'David Bowie', role: 'Musician', avatarAsset: 'assets/images/isfp_fp2.png'),
+      const FamousPerson(name: 'Britney Spears', role: 'Performer', avatarAsset: 'assets/images/isfp_fp3.png'),
+    ],
+    localAsset: 'assets/images/isfp.png',
+    accentColor: const Color(0xFF009688),
+  ),
+  PersonalityType(
+    id: 'ESTP',
+    name: 'ESTP',
+    subtitle: 'The Entrepreneur',
+    keyTraits: const ['Energetic', 'Observant', 'Bold'],
+    strengths: const ['Quick action', 'Persuasion', 'Adaptability'],
+    growthAreas: const ['May be impulsive', 'Can overlook details'],
+    atWork: 'You shine in fast-moving environments that reward decisive action.',
+    inRelationships: 'You bring excitement, realism, and loyalty.',
+    underStress: 'You might take risky shortcuts or get impatient.',
+    quickFacts: const [
+      'Takes action fast and adjusts on the fly.',
+      'Reads the room and persuades effectively.',
+      'Prefers tangible, real-world results.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Ernest Hemingway', role: 'Author', avatarAsset: 'assets/images/estp_fp1.png'),
+      const FamousPerson(name: 'Madonna', role: 'Performer', avatarAsset: 'assets/images/estp_fp2.png'),
+      const FamousPerson(name: 'Eddie Murphy', role: 'Actor', avatarAsset: 'assets/images/estp_fp3.png'),
+    ],
+    localAsset: 'assets/images/estp.png',
+    accentColor: const Color(0xFFBF360C),
+  ),
+  PersonalityType(
+    id: 'ESFP',
+    name: 'ESFP',
+    subtitle: 'The Entertainer',
+    keyTraits: const ['Playful', 'Spontaneous', 'Warm'],
+    strengths: const ['Energy', 'Practical empathy', 'Adaptability'],
+    growthAreas: const ['May avoid long-term planning', 'Can chase novelty'],
+    atWork: 'You excel in roles that blend people-focus, creativity, and action.',
+    inRelationships: 'You create memorable moments and value shared fun.',
+    underStress: 'You might feel trapped by routine or criticism.',
+    quickFacts: const [
+      'Brings energy and warmth to teams.',
+      'Keeps experiences lively and memorable.',
+      'Thrives with people-first work.',
+    ],
+    famousPeople: const [
+      const FamousPerson(name: 'Elvis Presley', role: 'Performer', avatarAsset: 'assets/images/esfp_fp1.png'),
+      const FamousPerson(name: 'Serena Williams', role: 'Athlete', avatarAsset: 'assets/images/esfp_fp2.png'),
+      const FamousPerson(name: 'Jamie Foxx', role: 'Actor', avatarAsset: 'assets/images/esfp_fp3.png'),
+    ],
+    localAsset: 'assets/images/esfp.png',
+    accentColor: const Color(0xFFFF7043),
+  ),
+];
+
+List<InsightItem> _buildInsights(PersonalityType type) {
+  return [
+    InsightItem(
+      title: 'Weekly Insight',
+      tag: 'This week',
+      icon: Icons.lightbulb_outline,
+      body: '${type.name} types do their best work when their ${type.subtitle.toLowerCase()} strengths are balanced with small, practical actions. Choose one habit to revisit this week.',
+    ),
+    InsightItem(
+      title: 'Growth Challenge',
+      tag: '3 days ago',
+      icon: Icons.rocket_launch_outlined,
+      body: 'Stretch outside your comfort zone by pairing one of your key traits (${type.keyTraits.first}) with a new medium. Small, consistent steps beat big leaps.',
+    ),
+    InsightItem(
+      title: 'Relationship Tip',
+      tag: '1 week ago',
+      icon: Icons.favorite_outline,
+      body: 'Share one of your current interests with someone close. ${type.name} types build trust through honest, low-pressure conversations.',
+    ),
+    InsightItem(
+      title: 'Recommended Reading',
+      tag: '2 weeks ago',
+      icon: Icons.menu_book_outlined,
+      body: 'Save room to recharge with a piece that reflects your outlook—essays, memoirs, or guides that affirm your values keep you inspired.',
+    ),
+    InsightItem(
+      title: 'Daily Affirmation',
+      tag: 'Today',
+      icon: Icons.sparkles,
+      body: 'You are more than your output. Your perspective as a ${type.subtitle.toLowerCase()} helps others see new possibilities.',
+    ),
+  ];
+}
+
+List<QuickTip> _buildQuickTips(PersonalityType type) {
+  return [
+    QuickTip(
+      title: 'Self-Care',
+      body: 'Honor your natural energy patterns and recharge in ways that feel restorative for you.',
+    ),
+    QuickTip(
+      title: 'Communication',
+      body: 'Share how you process ideas. Let others know if you need space to reflect or to brainstorm live.',
+    ),
+    QuickTip(
+      title: 'Decision Making',
+      body: 'Pair your intuition with one concrete fact before you commit. It keeps decisions grounded.',
+    ),
+    QuickTip(
+      title: 'Growth',
+      body: 'Lean into a small habit that stretches you beyond routine. Consistency compounds progress.',
+    ),
+  ];
+}
+
+final Map<String, List<InsightItem>> personalityInsights = {
+  for (final type in personalityTypes) type.id: _buildInsights(type),
+};
+
+final Map<String, List<QuickTip>> personalityQuickTips = {
+  for (final type in personalityTypes) type.id: _buildQuickTips(type),
+};
