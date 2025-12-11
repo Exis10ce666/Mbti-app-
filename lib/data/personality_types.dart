@@ -1,6 +1,27 @@
 import 'package:flutter/material.dart';
 import '../models.dart';
 
+class InsightItem {
+  const InsightItem({
+    required this.title,
+    required this.body,
+    required this.tag,
+    required this.icon,
+  });
+
+  final String title;
+  final String body;
+  final String tag;
+  final IconData icon;
+}
+
+class QuickTip {
+  const QuickTip({required this.title, required this.body});
+
+  final String title;
+  final String body;
+}
+
 // A compact personality catalog. Add more entries or replace the placeholder
 // images inside assets/images to match your Figma exports.
 final List<PersonalityType> personalityTypes = [
@@ -373,3 +394,67 @@ final List<PersonalityType> personalityTypes = [
     accentColor: const Color(0xFFFF7043),
   ),
 ];
+
+List<InsightItem> _buildInsights(PersonalityType type) {
+  return [
+    InsightItem(
+      title: 'Weekly Insight',
+      tag: 'This week',
+      icon: Icons.lightbulb_outline,
+      body: '${type.name} types do their best work when their ${type.subtitle.toLowerCase()} strengths are balanced with small, practical actions. Choose one habit to revisit this week.',
+    ),
+    InsightItem(
+      title: 'Growth Challenge',
+      tag: '3 days ago',
+      icon: Icons.rocket_launch_outlined,
+      body: 'Stretch outside your comfort zone by pairing one of your key traits (${type.keyTraits.first}) with a new medium. Small, consistent steps beat big leaps.',
+    ),
+    InsightItem(
+      title: 'Relationship Tip',
+      tag: '1 week ago',
+      icon: Icons.favorite_outline,
+      body: 'Share one of your current interests with someone close. ${type.name} types build trust through honest, low-pressure conversations.',
+    ),
+    InsightItem(
+      title: 'Recommended Reading',
+      tag: '2 weeks ago',
+      icon: Icons.menu_book_outlined,
+      body: 'Save room to recharge with a piece that reflects your outlook—essays, memoirs, or guides that affirm your values keep you inspired.',
+    ),
+    InsightItem(
+      title: 'Daily Affirmation',
+      tag: 'Today',
+      icon: Icons.sparkles,
+      body: 'You are more than your output. Your perspective as a ${type.subtitle.toLowerCase()} helps others see new possibilities.',
+    ),
+  ];
+}
+
+List<QuickTip> _buildQuickTips(PersonalityType type) {
+  return [
+    QuickTip(
+      title: 'Self-Care',
+      body: 'Honor your natural energy patterns and recharge in ways that feel restorative for you.',
+    ),
+    QuickTip(
+      title: 'Communication',
+      body: 'Share how you process ideas. Let others know if you need space to reflect or to brainstorm live.',
+    ),
+    QuickTip(
+      title: 'Decision Making',
+      body: 'Pair your intuition with one concrete fact before you commit. It keeps decisions grounded.',
+    ),
+    QuickTip(
+      title: 'Growth',
+      body: 'Lean into a small habit that stretches you beyond routine. Consistency compounds progress.',
+    ),
+  ];
+}
+
+final Map<String, List<InsightItem>> personalityInsights = {
+  for (final type in personalityTypes) type.id: _buildInsights(type),
+};
+
+final Map<String, List<QuickTip>> personalityQuickTips = {
+  for (final type in personalityTypes) type.id: _buildQuickTips(type),
+};
