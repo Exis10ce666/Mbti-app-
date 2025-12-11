@@ -96,7 +96,7 @@ class ExploreScreen extends StatelessWidget {
               child: _UnderstandingSection(),
             ),
             const SliverToBoxAdapter(
-              child: SizedBox(height: 18),
+              child: SizedBox(height: 36),
             ),
           ],
         ),
