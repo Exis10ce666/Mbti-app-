@@ -83,7 +83,7 @@ class _TypeCard extends StatelessWidget {
           const SizedBox(height: 12),
           _FactsSection(type: type),
           const SizedBox(height: 12),
-          _FamousPeopleRow(type: type),
+          _FamousPeopleColumn(type: type),
         ],
       ),
     );
@@ -105,7 +105,13 @@ class _FactsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Quick facts', style: TextStyle(fontWeight: FontWeight.bold)),
+        Row(
+          children: const [
+            Icon(Icons.tips_and_updates, color: Colors.amber, size: 18),
+            SizedBox(width: 6),
+            Text('Quick facts', style: TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
         const SizedBox(height: 8),
         ...facts.map((fact) => Padding(
               padding: const EdgeInsets.only(bottom: 6),
@@ -126,8 +132,8 @@ class _FactsSection extends StatelessWidget {
   }
 }
 
-class _FamousPeopleRow extends StatelessWidget {
-  const _FamousPeopleRow({required this.type});
+class _FamousPeopleColumn extends StatelessWidget {
+  const _FamousPeopleColumn({required this.type});
   final PersonalityType type;
 
   @override
@@ -137,17 +143,6 @@ class _FamousPeopleRow extends StatelessWidget {
       _FamousPerson(name: 'Second person', role: 'Role', imageLabel: 'Upload here'),
       _FamousPerson(name: 'Third person', role: 'Title', imageLabel: 'Upload here'),
     ];
-
-    final tiles = entries
-        .map(
-          (entry) => Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: _FamousPersonTile(entry: entry, accent: type.accentColor),
-            ),
-          ),
-        )
-        .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,7 +155,10 @@ class _FamousPeopleRow extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 10),
-        Row(children: tiles),
+        ...entries.map((entry) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: _FamousPersonTile(entry: entry, accent: type.accentColor),
+            )),
       ],
     );
   }
@@ -174,18 +172,11 @@ class _FamousPersonTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 6,
-            offset: const Offset(0, 4),
-          ),
-        ],
-        border: Border.all(color: accent.withOpacity(0.15)),
+        color: accent.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: accent.withOpacity(0.2)),
       ),
       child: Row(
         children: [
