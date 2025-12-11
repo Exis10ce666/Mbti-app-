@@ -96,11 +96,13 @@ class _FactsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final facts = [
-      'Insert a well-known ${type.name} anecdote for quick recognition.',
-      'Add a note on how they embody ${type.subtitle.toLowerCase()}.',
-      'Share a standout achievement that fits this type.',
-    ];
+    final facts = type.quickFacts.isNotEmpty
+        ? type.quickFacts
+        : [
+            'Add a quick snapshot that captures ${type.name} at a glance.',
+            'Share a notable trait that embodies ${type.subtitle.toLowerCase()}.',
+            'Highlight a memorable achievement or story.',
+          ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,11 +140,7 @@ class _FamousPeopleColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final entries = [
-      _FamousPerson(name: 'Insert name', role: 'Occupation', imageLabel: 'Upload here'),
-      _FamousPerson(name: 'Second person', role: 'Role', imageLabel: 'Upload here'),
-      _FamousPerson(name: 'Third person', role: 'Title', imageLabel: 'Upload here'),
-    ];
+    final entries = type.famousPeople;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,6 +157,17 @@ class _FamousPeopleColumn extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 8),
               child: _FamousPersonTile(entry: entry, accent: type.accentColor),
             )),
+        if (entries.isEmpty)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: type.accentColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: type.accentColor.withOpacity(0.25)),
+            ),
+            child: const Text('Drop in three recognizable faces for this type.'),
+          ),
       ],
     );
   }
@@ -166,7 +175,7 @@ class _FamousPeopleColumn extends StatelessWidget {
 
 class _FamousPersonTile extends StatelessWidget {
   const _FamousPersonTile({required this.entry, required this.accent});
-  final _FamousPerson entry;
+  final FamousPerson entry;
   final Color accent;
 
   @override
@@ -180,11 +189,7 @@ class _FamousPersonTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: accent.withOpacity(0.18),
-            child: Text(entry.imageLabel, textAlign: TextAlign.center, style: const TextStyle(fontSize: 9)),
-          ),
+          _AvatarOrPlaceholder(asset: entry.avatarAsset, accent: accent),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -201,11 +206,29 @@ class _FamousPersonTile extends StatelessWidget {
   }
 }
 
-class _FamousPerson {
-  const _FamousPerson({required this.name, required this.role, required this.imageLabel});
-  final String name;
-  final String role;
-  final String imageLabel;
+class _AvatarOrPlaceholder extends StatelessWidget {
+  const _AvatarOrPlaceholder({required this.asset, required this.accent});
+  final String? asset;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: 20,
+      backgroundColor: accent.withOpacity(0.18),
+      child: asset == null
+          ? const Text('Upload\nhere', textAlign: TextAlign.center, style: TextStyle(fontSize: 9))
+          : ClipOval(
+              child: Image.asset(
+                asset!,
+                fit: BoxFit.cover,
+                width: 40,
+                height: 40,
+                errorBuilder: (_, __, ___) => const Text('Upload', textAlign: TextAlign.center, style: TextStyle(fontSize: 9)),
+              ),
+            ),
+    );
+  }
 }
 
 class _TypeImage extends StatelessWidget {

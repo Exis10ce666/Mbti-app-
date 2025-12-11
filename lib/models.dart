@@ -32,6 +32,8 @@ class PersonalityType {
     required this.atWork,
     required this.inRelationships,
     required this.underStress,
+    required this.quickFacts,
+    required this.famousPeople,
     this.localAsset,
     this.accentColor = const Color(0xFF6C63FF),
   });
@@ -45,6 +47,20 @@ class PersonalityType {
   final String atWork;
   final String inRelationships;
   final String underStress;
+  final List<String> quickFacts;
+  final List<FamousPerson> famousPeople;
   final String? localAsset;
   final Color accentColor;
+}
+
+class FamousPerson {
+  const FamousPerson({
+    required this.name,
+    required this.role,
+    this.avatarAsset,
+  });
+
+  final String name;
+  final String role;
+  final String? avatarAsset;
 }
